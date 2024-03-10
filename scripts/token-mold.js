@@ -1078,7 +1078,7 @@ class TokenMoldForm extends FormApplication {
       ro: "roman numerals",
     };
     data.barAttributes = this.barAttributes;
-    data.actorAttributes = this._actorAttributes;
+    data.actorAttributes = this.actorAttributes;
     data.displayModes = CONST.TOKEN_DISPLAY_MODES;
     data.dispositions = CONST.TOKEN_DISPOSITIONS;
     data.defaultIcons = this.defaultIcons;
@@ -1321,11 +1321,17 @@ class TokenMoldForm extends FormApplication {
         else if (a.attribute < b.attribute) return -1;
         return 0;
       };
-      for (let skill of Object.keys(game.system.model.Actor["npc"].skills)) {
+      for (let skill of (Object.keys(game.system.model.Actor["npc"].skills) || [])) {
         groups["skills"].push({
           document: "character, npc",
           attribute: `${skill}.passive`,
         });
+      }
+      if (!groups["skills"]) {
+        groups["skills"] = [];
+      }
+      if (!groups["attributes"]) {
+        groups["attributes"] = [];
       }
       groups["skills"].sort(sortFun);
       groups["attributes"].push({
